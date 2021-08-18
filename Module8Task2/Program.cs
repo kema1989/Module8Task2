@@ -11,11 +11,35 @@ namespace Module8Task2
             DirectoryInfo dirSpace = new DirectoryInfo(dirPath);
             try
             {
+                long size = 0;
                 if (dirSpace.Exists)
                 {
-                    FileInfo files = new FileInfo()
+                    long totalsize = EvaluateSpace(size, dirSpace);
+                    foreach(DirectoryInfo papka in dirSpace.GetDirectories())
+                    {
+                        totalsize += EvaluateSpace(size, papka);
+                    }
+                    Console.WriteLine(totalsize + " байт");
+                }
+                else
+                {
+                    throw new Exception("Такой папки нет...");
                 }
             }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Ошибка: {0}", ex.Message);
+            }
+        }
+
+        static long EvaluateSpace(long size, DirectoryInfo dirSpace)
+        {
+            foreach (FileInfo file in dirSpace.GetFiles())
+            {
+                size += file.Length;
+            }
+            
+            return size;
         }
     }
 }
