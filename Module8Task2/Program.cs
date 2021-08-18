@@ -15,10 +15,6 @@ namespace Module8Task2
                 if (dirSpace.Exists)
                 {
                     long totalsize = EvaluateSpace(size, dirSpace);
-                    foreach(DirectoryInfo papka in dirSpace.GetDirectories())
-                    {
-                        totalsize += EvaluateSpace(size, papka);
-                    }
                     Console.WriteLine(totalsize + " байт");
                 }
                 else
@@ -26,19 +22,21 @@ namespace Module8Task2
                     throw new Exception("Такой папки нет...");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine("Ошибка: {0}", ex.Message);
             }
         }
-
         static long EvaluateSpace(long size, DirectoryInfo dirSpace)
         {
             foreach (FileInfo file in dirSpace.GetFiles())
             {
                 size += file.Length;
             }
-            
+            foreach (DirectoryInfo papka in dirSpace.GetDirectories())
+            {
+                size += EvaluateSpace(0, papka);
+            }
             return size;
         }
     }
