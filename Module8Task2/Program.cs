@@ -7,7 +7,7 @@ namespace Module8Task2
     {
         static void Main(string[] args)
         {
-            string dirPath = @"C:\Users\YOGA\Desktop\WaitingForDeath";
+            string dirPath = @"C:\Users\YOGA\Documents\Electronic Arts";
             DirectoryInfo dirSpace = new DirectoryInfo(dirPath);
             try
             {
@@ -15,16 +15,19 @@ namespace Module8Task2
                 if (dirSpace.Exists)
                 {
                     long totalsize = EvaluateSpace(size, dirSpace);
-                    Console.WriteLine(totalsize + " байт");
+                    Console.WriteLine($"Папка {dirSpace} занимает {totalsize} байт");
                 }
                 else
                 {
-                    throw new Exception("Такой папки нет...");
+                    Console.WriteLine("Такой папки нет...");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Ошибка: {0}", ex.Message);
+                if(ex is UnauthorizedAccessException)
+                {
+                    Console.WriteLine("Нет прав доступа...");
+                }
             }
         }
         static long EvaluateSpace(long size, DirectoryInfo dirSpace)
